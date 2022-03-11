@@ -3,88 +3,63 @@ package com.composeproject
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.Card
-import androidx.compose.material.Text
-import androidx.compose.runtime.Composable
+import androidx.compose.material.*
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Brush
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.painter.Painter
-import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
+import kotlinx.coroutines.launch
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-            val painter = painterResource(id = R.drawable.pikachu)
-            val title = "My name is Pikachu"
-            val description = "POKEMON"
-            Box(
-                modifier = Modifier
-                    .fillMaxWidth(0.5f)
-                    .padding(16.dp)
+            val scaffoldState = rememberScaffoldState()
+            var textFieldStat by remember {
+                mutableStateOf("")
+            }
+            val scope = rememberCoroutineScope()
+            Scaffold(
+                modifier = Modifier.fillMaxSize(),
+                scaffoldState = scaffoldState
             ) {
-                ImageCard(
-                    painter = painter,
-                    title = title,
-                    contentDescription = description
-                )
+                Column(
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    verticalArrangement = Arrangement.Center,
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .padding(horizontal = 30.dp)
+                ) {
+                    TextField(
+                        value = textFieldStat,
+                        label = {
+                            Text("Enter your name")
+                        },
+                        onValueChange = {
+                            textFieldStat = it
+                        },
+                        singleLine = true,
+                        modifier = Modifier.fillMaxWidth()
+                    )
+                    Spacer(modifier = Modifier.height(16.dp))
+                    Button(onClick = {
+                        scope.launch {
+                            scaffoldState.snackbarHostState.showSnackbar(message = "Hello $textFieldStat")
+                        }
+                    }) {
+                        Text(text = "Pls greet me")
+                    }
+                }
             }
         }
     }
 }
 
-@Composable
-fun ImageCard(
-    painter: Painter,
-    title: String,
-    contentDescription: String,
-    modifier: Modifier = Modifier
-) {
-    Card(
-        modifier = modifier.fillMaxWidth(),
-        shape = RoundedCornerShape(15.dp),
-        elevation = 15.dp
-    ) {
-        Box(modifier = Modifier.height(200.dp)) {
-            Image(
-                painter = painter,
-                contentDescription = contentDescription,
-                contentScale = ContentScale.Crop
-            )
-            Box(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .background(
-                        Brush.verticalGradient(
-                            colors = listOf(
-                                Color.Transparent,
-                                Color.Black
-                            ),
-                            startY = 300f
-                        )
-                    )
-            )
-            Box(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .padding(12.dp),
-                contentAlignment = Alignment.BottomCenter
-            ) {
-                Text(
-                    text = title,
-                    style = TextStyle(Color.White, fontSize = 16.sp)
-                )
-            }
-        }
-    }
-}
+/**
+ * Scaffold is just a layout in compose which make it easy for us to include already
+ * existing material design components in jetpack compose.
+ * With a scaffold we can easily create toolBar / navigation drawer / snackbar / etc..
+ *
+ * "scaffoldState" = to show the snackbar later.
+ * */
