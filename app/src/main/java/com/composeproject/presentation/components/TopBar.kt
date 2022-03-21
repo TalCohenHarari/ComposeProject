@@ -21,7 +21,6 @@ fun TopBar(
     name: String,
     modifier: Modifier = Modifier,
 ) {
-    Spacer(modifier = Modifier.height(20.dp))
     Row(
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.SpaceAround,
@@ -43,13 +42,13 @@ fun TopBar(
             painter = painterResource(id = R.drawable.ic_bell),
             contentDescription = "Bell",
             tint = Color.Black,
-            modifier = modifier.size(24.dp)
+            modifier = modifier.size(30.dp)
         )
         Icon(
             painter = painterResource(id = R.drawable.ic_dots_menu),
-            contentDescription = "Dot menu",
+            contentDescription = "Dots menu",
             tint = Color.Black,
-            modifier = modifier.size(24.dp)
+            modifier = modifier.size(26.dp)
         )
     }
 }

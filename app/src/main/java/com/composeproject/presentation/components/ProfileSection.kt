@@ -14,6 +14,8 @@ import com.composeproject.R
 @Composable
 fun ProfileSection(
     modifier: Modifier = Modifier,
+    profileDescriptionMap: HashMap<String,String>,
+    followedList: List<String>
 ) {
     Column(modifier = modifier.fillMaxWidth()) {
         Row(
@@ -31,6 +33,13 @@ fun ProfileSection(
             Spacer(modifier = Modifier.height(60.dp))
             StatSection(modifier = Modifier.weight(7f))
         }
+        ProfileDescription(
+            displayName = profileDescriptionMap["displayName"]!!,
+            description = profileDescriptionMap["description"]!!,
+            url = profileDescriptionMap["url"]!!,
+            followedBy = followedList,
+            otherCount = 17
+        )
     }
 }
 
